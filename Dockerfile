@@ -10,7 +10,7 @@ RUN dos2unix gradlew
 Run bash gradlew buildFatJar
 
 WORKDIR /run
-RUN mkdir /run
+
 RUN cp /src/build/libs/*.jar /run/server.jar
 
 EXPOSE 8080

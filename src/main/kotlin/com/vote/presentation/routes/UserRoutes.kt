@@ -1,6 +1,5 @@
 package com.vote.presentation.routes
 
-import com.vote.data.util.EmailService
 import com.vote.data.util.JwtVerifier
 import com.vote.domain.dao.UserDao
 import com.vote.domain.model.User

@@ -7,7 +7,7 @@ RUN apt-get update
 RUN apt-get install -y dos2unix
 RUN dos2unix gradlew
 
-Run bash gradlew shadowJar
+Run bash gradlew fatJar
 
 WORKDIR /run
 

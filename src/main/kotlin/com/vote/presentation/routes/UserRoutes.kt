@@ -26,7 +26,7 @@ fun Routing.userRoute(){
             val isValid = dao.login(user.email!!, user.password!!)
 
             if (isValid)
-                JwtVerifier.generate(user.email, user.password)
+                JwtVerifier.generate(user.email)
             else null
         }
 

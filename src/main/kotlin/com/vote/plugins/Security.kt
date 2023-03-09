@@ -12,7 +12,7 @@ fun Application.configureSecurity() {
     
     authentication {
             jwt("auth") {
-                realm = this@configureSecurity.environment.config.property("jwt.realm").getString()
+                realm = JwtVerifier.realm()
                 verifier(JwtVerifier.verifier())
                 validate { credential ->
 

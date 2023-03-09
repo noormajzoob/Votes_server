@@ -10,6 +10,7 @@ object JwtVerifier {
     private val secret = System.getenv("secret")
     private val jwtAudience = System.getenv("jwt.audience")
     private val issuer = System.getenv("jwt.issuer")
+    private val realm = System.getenv("jwt.realm")
 
 
     fun verifier(): JWTVerifier{
@@ -21,14 +22,13 @@ object JwtVerifier {
     }
 
     fun audience() = jwtAudience
+    fun realm() = realm
 
-
-    fun generate(email: String, password: String): String{
+    fun generate(email: String): String{
         return JWT.create()
             .withAudience(jwtAudience)
             .withIssuer(issuer)
             .withClaim("email", email)
-            .withClaim("password", password)
             .withExpiresAt(Date(System.currentTimeMillis() + (5 * 60 * 1000)))
             .sign(Algorithm.HMAC256(secret))
     }

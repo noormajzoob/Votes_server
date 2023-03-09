@@ -19,7 +19,7 @@ object JwtVerifier {
             .build()
     }
 
-    fun audience() = jwtAudience
+    fun audience() = jwtAudience?: "audience"
     fun realm() = System.getenv("jwt.realm")?: "realm"
 
     fun generate(email: String): String{

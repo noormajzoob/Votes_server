@@ -15,7 +15,6 @@ fun Application.configureSecurity() {
                 realm = JwtVerifier.realm()
                 verifier(JwtVerifier.verifier())
                 validate { credential ->
-
                     if (credential.payload.audience.contains(JwtVerifier.audience())) JWTPrincipal(credential.payload) else null
                 }
                 challenge { defaultScheme, realm ->

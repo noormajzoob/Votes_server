@@ -99,7 +99,7 @@ fun Route.voteRoute(){
                     val vote = VoteDao.getVoteByUUID(uuid)
 
                     if (vote != null){
-                        VoteDao.incrementView(vote.vote.id!!, vote.vote.views!!)
+                        VoteDao.incrementView(vote.vote.id!!, vote.vote.views!! + 1)
 
                         call.respond(HttpStatusCode.OK, vote)
                     }else call.respond(HttpStatusCode.NotFound)

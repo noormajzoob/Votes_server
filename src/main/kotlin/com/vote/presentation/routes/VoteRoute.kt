@@ -72,11 +72,21 @@ fun Route.voteRoute(){
                 else null
             }
 
-            postRoute<SelectedVote> { body ->
+            postRoute<SelectedVote>(route = "/selection"){ body ->
                 VoteDao.postVoteChooseSelection(
                     userId = body.user!!,
                     chooseId = body.choose!!
                 )
+            }
+
+            getRoute(route = "/{id}/count"){ id ->
+                VoteDao.getVotesCount(id)
+            }
+
+            getAllRoute(route = "/selection/{id}") { offset, limit, id ->
+                id?.let {
+                    VoteDao.getVotesChooseSelections(it, offset, limit)
+                }?: throw IllegalArgumentException()
             }
 
             get(""){

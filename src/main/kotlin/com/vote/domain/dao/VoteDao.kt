@@ -2,11 +2,14 @@ package com.vote.domain.dao
 
 import com.vote.data.DatabaseFactory.dbQuery
 import com.vote.data.schema.SelectedVoteSchema
+import com.vote.data.schema.UserSchema
 import com.vote.data.schema.VoteChoseSchema
 import com.vote.data.schema.VoteSchema
 import com.vote.domain.model.SelectedVote
+import com.vote.domain.model.User
 import com.vote.domain.model.Vote
 import com.vote.domain.model.VoteChoose
+import com.vote.presentation.dto.SelectionDto
 import com.vote.presentation.dto.VoteDto
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.deleteWhere
@@ -187,6 +190,39 @@ object VoteDao {
                 }
             )
         }
+    }
+
+    suspend fun getVotesChooseSelections(id: Long, offset: Long, limit: Int): List<SelectionDto> = dbQuery {
+        (SelectedVoteSchema innerJoin VoteChoseSchema innerJoin UserSchema).select {
+            VoteChoseSchema.targetVote eq id
+        }.limit(
+            n = limit,
+            offset = offset
+        ).map { result ->
+            val choose = VoteChoose(
+                id = result[VoteChoseSchema.id],
+                vote = result[VoteChoseSchema.targetVote],
+                content = result[VoteChoseSchema.content],
+            )
+
+            val user = User(
+                id = result[UserSchema.id],
+                name = result[UserSchema.name],
+                password = null,
+                email = result[UserSchema.email]
+            )
+
+            SelectionDto(
+                user = user,
+                choose = choose
+            )
+        }
+    }
+
+    suspend fun getVotesCount(id: Long): Int = dbQuery{
+        (SelectedVoteSchema innerJoin VoteChoseSchema).select {
+            VoteChoseSchema.targetVote eq id
+        }.count().toInt()
     }
 
 }

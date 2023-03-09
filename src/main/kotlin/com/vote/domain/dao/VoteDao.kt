@@ -27,7 +27,8 @@ object VoteDao {
                 timestamp = it[VoteSchema.timestamp],
                 duration = it[VoteSchema.duration],
                 urlId = it[VoteSchema.uuid],
-                status = it[VoteSchema.status]
+                status = it[VoteSchema.status],
+                views = it[VoteSchema.views],
             ) to VoteChoose(
                 id = it[VoteChoseSchema.id],
                 vote = it[VoteChoseSchema.targetVote],
@@ -58,6 +59,7 @@ object VoteDao {
                 timestamp = it[VoteSchema.timestamp],
                 duration = it[VoteSchema.duration],
                 urlId = it[VoteSchema.uuid],
+                views = it[VoteSchema.views],
                 status = it[VoteSchema.status]
             )
         }?.firstOrNull()
@@ -142,7 +144,8 @@ object VoteDao {
                 timestamp = it[VoteSchema.timestamp],
                 duration = it[VoteSchema.duration],
                 urlId = it[VoteSchema.uuid],
-                status = it[VoteSchema.status]
+                status = it[VoteSchema.status],
+                views = it[VoteSchema.views],
             ) to VoteChoose(
                 id = it[VoteChoseSchema.id],
                 vote = it[VoteChoseSchema.targetVote],
@@ -171,7 +174,8 @@ object VoteDao {
                 timestamp = it[VoteSchema.timestamp],
                 duration = it[VoteSchema.duration],
                 urlId = it[VoteSchema.uuid],
-                status = it[VoteSchema.status]
+                status = it[VoteSchema.status],
+                views = it[VoteSchema.views],
             ) to VoteChoose(
                 id = it[VoteChoseSchema.id],
                 vote = it[VoteChoseSchema.targetVote],
@@ -226,6 +230,17 @@ object VoteDao {
         (SelectedVoteSchema innerJoin VoteChoseSchema).select {
             VoteChoseSchema.targetVote eq id
         }.count().toInt()
+    }
+
+    suspend fun incrementView(id: Long, views: Int): Boolean = dbQuery{
+        VoteSchema.update(
+            where = {
+                VoteSchema.id eq id
+            },
+            body = {
+                it[VoteSchema.views] = views
+            }
+        ) > 0
     }
 
 }

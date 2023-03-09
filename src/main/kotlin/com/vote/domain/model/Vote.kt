@@ -7,6 +7,7 @@ data class Vote(
     val title: String?,
     val timestamp: Long?,
     val duration: Int?,
+    val views: Int?,
     val urlId: String?,
     val status: Boolean?,
 )

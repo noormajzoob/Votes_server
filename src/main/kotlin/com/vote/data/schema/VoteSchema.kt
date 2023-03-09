@@ -12,6 +12,7 @@ object VoteSchema: Table("votes") {
     val timestamp = long("timestamp").default(System.currentTimeMillis())
     val duration = integer("duration")
     val uuid = varchar("vote_url", 50).default(UUID.randomUUID().toString())
+    val views = integer("views").default(0)
     val status = bool("is_available").default(true)
 
     override val primaryKey = PrimaryKey(id)

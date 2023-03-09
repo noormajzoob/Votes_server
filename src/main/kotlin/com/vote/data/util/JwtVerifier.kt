@@ -10,8 +10,6 @@ object JwtVerifier {
     private val secret = System.getenv("secret")
     private val jwtAudience = System.getenv("jwt.audience")
     private val issuer = System.getenv("jwt.issuer")
-    private val realm = System.getenv("jwt.realm")
-
 
     fun verifier(): JWTVerifier{
         return JWT
@@ -22,7 +20,7 @@ object JwtVerifier {
     }
 
     fun audience() = jwtAudience
-    fun realm() = realm
+    fun realm() = System.getenv("jwt.realm")
 
     fun generate(email: String): String{
         return JWT.create()

@@ -23,15 +23,16 @@ fun Routing.userRoute(){
             user
         }
 
-        postAnyRoute<User>("/login"){ user ->
-            val isValid = dao.login(user.email!!, user.password!!)
+        postAnyRoute<User>("/login"){ body ->
+            val isValid = dao.login(body.email!!, body.password!!)
 
             if (isValid) {
-                val user = dao.getUser(user.email!!)
-                val token = JwtVerifier.generate(user.email)
+                val user = dao.getUser(body.email!!)
+                val token = JwtVerifier.generate(user.email!!)
 
                 LoginRepoDto(
-                    user, token
+                    user!!,
+                    token
                 )
             }else null
         }

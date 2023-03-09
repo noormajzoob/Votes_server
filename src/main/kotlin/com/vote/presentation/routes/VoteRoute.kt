@@ -83,6 +83,10 @@ fun Route.voteRoute(){
                 VoteDao.getVotesCount(id)
             }
 
+            getRoute(route = "/user/{id}/active/count"){ id ->
+                VoteDao.getActiveVotesCount(id)
+            }
+
             getAllRoute(route = "/selection/{id}") { offset, limit, id ->
                 id?.let {
                     VoteDao.getVotesChooseSelections(it, offset, limit)

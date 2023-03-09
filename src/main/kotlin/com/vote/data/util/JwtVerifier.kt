@@ -7,9 +7,17 @@ import java.util.*
 
 object JwtVerifier {
 
-    private val secret = System.getenv("secret")
-    private val jwtAudience = System.getenv("jwt.audience")
-    private val issuer = System.getenv("jwt.issuer")
+    private lateinit var secret: String
+    private lateinit var jwtAudience: String
+    private lateinit var issuer: String
+    private lateinit var realm: String
+
+    fun init(){
+        secret = System.getenv("secret")
+        jwtAudience = System.getenv("jwt.audience")
+        issuer = System.getenv("jwt.issuer")
+        realm = System.getenv("jwt.realm")
+    }
 
     fun verifier(): JWTVerifier{
         return JWT
@@ -19,8 +27,8 @@ object JwtVerifier {
             .build()
     }
 
-    fun audience() = jwtAudience?: "audience"
-    fun realm() = System.getenv("jwt.realm")?: "realm"
+    fun audience() = jwtAudience
+    fun realm() = realm
 
     fun generate(email: String): String{
         return JWT.create()

@@ -11,11 +11,8 @@ import com.vote.domain.model.Vote
 import com.vote.domain.model.VoteChoose
 import com.vote.presentation.dto.SelectionDto
 import com.vote.presentation.dto.VoteDto
+import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import org.jetbrains.exposed.sql.deleteWhere
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.select
-import org.jetbrains.exposed.sql.update
 
 object VoteDao {
 
@@ -190,6 +187,12 @@ object VoteDao {
                 }
             )
         }
+    }
+
+    suspend fun getActiveVotesCount(id: Long): Int = dbQuery {
+        VoteSchema.select {
+            (VoteSchema.createdBy eq id) and (VoteSchema.status eq true)
+        }.count().toInt()
     }
 
     suspend fun getVotesChooseSelections(id: Long, offset: Long, limit: Int): List<SelectionDto> = dbQuery {

@@ -3,6 +3,7 @@ package com.vote.presentation.routes
 import com.vote.data.util.JwtVerifier
 import com.vote.domain.dao.UserDao
 import com.vote.domain.model.User
+import com.vote.presentation.dto.LoginRepoDto
 import com.vote.presentation.endpoints.*
 import com.vote.presentation.endpoints.postRoute
 import io.ktor.server.auth.*
@@ -25,15 +26,17 @@ fun Routing.userRoute(){
         postAnyRoute<User>("/login"){ user ->
             val isValid = dao.login(user.email!!, user.password!!)
 
-            if (isValid)
-                JwtVerifier.generate(user.email)
-            else null
+            if (isValid) {
+                val user = dao.getUser(user.email!!)
+                val token = JwtVerifier.generate(user.email)
+
+                LoginRepoDto(
+                    user, token
+                )
+            }else null
         }
 
         authenticate("auth"){
-            getRoute { id ->
-                dao.getUser(id)
-            }
 
             putRoute<User> { id, user ->
 

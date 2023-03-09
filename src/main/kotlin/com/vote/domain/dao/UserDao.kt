@@ -46,9 +46,9 @@ class UserDao {
         }else false
     }
 
-    suspend fun getUser(id: Long): User? = dbQuery{
+    suspend fun getUser(email: String): User? = dbQuery{
         UserSchema.select {
-            UserSchema.id eq id
+            UserSchema.email eq email
         }.map { result ->
             User(
                 id = result[UserSchema.id],

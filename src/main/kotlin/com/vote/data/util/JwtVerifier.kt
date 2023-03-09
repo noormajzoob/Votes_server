@@ -20,7 +20,7 @@ object JwtVerifier {
     }
 
     fun audience() = jwtAudience
-    fun realm() = System.getenv("jwt.realm")
+    fun realm() = System.getenv("jwt.realm")?: "realm"
 
     fun generate(email: String): String{
         return JWT.create()

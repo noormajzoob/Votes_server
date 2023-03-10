@@ -68,7 +68,7 @@ fun Route.voteRoute(){
 
             putRoute<Any>(route = "/{id}/inactive"){ id, data ->
                 if (VoteDao.setInActive(id))
-                    "vote activated"
+                    "vote deactivated"
                 else null
             }
 

@@ -162,6 +162,36 @@ object VoteDao {
             )
         }.singleOrNull()
     }
+    
+    suspend fun getUserActiveVotes(id: Long, offset: Long, limit: Int): List<VoteDto> = dbQuery{
+        (VoteSchema innerJoin VoteChoseSchema).select {
+            (VoteSchema.createdBy eq id) and (VoteSchema.status eq true)
+        }.limit(limit, offset).map {
+            Vote(
+                id = it[VoteSchema.id],
+                user = it[VoteSchema.createdBy],
+                title = it[VoteSchema.title],
+                timestamp = it[VoteSchema.timestamp],
+                duration = it[VoteSchema.duration],
+                urlId = it[VoteSchema.uuid],
+                status = it[VoteSchema.status],
+                views = it[VoteSchema.views],
+            ) to VoteChoose(
+                id = it[VoteChoseSchema.id],
+                vote = it[VoteChoseSchema.targetVote],
+                content = it[VoteChoseSchema.content],
+            )
+        }.groupBy {
+            it.first
+        }.map {
+            VoteDto(
+                vote = it.key,
+                chooses = it.value.map {
+                    it.second
+                }
+            )
+        }
+    }
 
     suspend fun getUserVotes(id: Long, offset: Long, limit: Int): List<VoteDto> = dbQuery{
         (VoteSchema innerJoin VoteChoseSchema).select {

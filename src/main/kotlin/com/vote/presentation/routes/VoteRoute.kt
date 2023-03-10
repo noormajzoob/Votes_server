@@ -50,25 +50,25 @@ fun Route.voteRoute(){
 
             deleteRoute { id ->
                 if (VoteDao.deleteVote(id)){
-                    "vote has been deleted"
+                    mapOf("msg" to "vote has been deleted")
                 }else null
             }
 
             putRoute<Vote> { id, data ->
                 if (VoteDao.putVote(id, data.title!!, data.status!!, data.duration!!))
-                    "vote has been updated"
+                    mapOf("msg" to "vote has been updated")
                 else null
             }
 
             putRoute<Any>(route = "/{id}/active"){ id, data ->
                 if (VoteDao.setActive(id))
-                    "msg" to "vote activated"
+                    mapOf("msg" to "vote has been active")
                 else null
             }
 
             putRoute<Any>(route = "/{id}/inactive"){ id, data ->
                 if (VoteDao.setInActive(id))
-                    "msg" to "vote deactivated"
+                    mapOf("msg" to "vote has been deactivat")
                 else null
             }
 

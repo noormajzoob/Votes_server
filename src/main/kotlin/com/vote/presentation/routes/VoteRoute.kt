@@ -24,6 +24,12 @@ fun Route.voteRoute(){
                     VoteDao.getUserVotes(this, offset, limit)
                 }
             }
+            
+            getAllRoute(route = "/user/{id}/active/list"){ offset, limit, id ->
+                id?.run {
+                    VoteDao.getUserActiveVotes(this, offset, limit)
+                }
+            }
 
             postRoute<VoteDto> { body ->
                 val vote = VoteDao.postVote(
